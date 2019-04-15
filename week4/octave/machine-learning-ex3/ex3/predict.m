@@ -22,12 +22,18 @@ p = zeros(size(X, 1), 1);
 %
 
 
+add_ones = @(y) [ones(size(y, 1), 1) y]
 
+%add a line of ones on matrixes:
+A1 = add_ones(X);
 
+Z2 = A1 * Theta1';
+A2 = add_ones(sigmoid(Z2));
 
+Z3 = A2 * Theta2';
+H = sigmoid(Z3)
 
-
-
+[_, p] = max(H, [], 2)
 
 % =========================================================================
 
