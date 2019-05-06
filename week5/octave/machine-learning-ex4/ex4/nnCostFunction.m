@@ -108,14 +108,14 @@ endfor
 p = lambda/(2*m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
 
 % removing first weight column to penalizing, the first feature - the constant feature or x0 - must not be consider
-J = J + p
+J = J + p;
 
-Theta1_grad = 1/m * Theta1_grad 
-Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + lambda/m * Theta1(:, 2:end)
+Theta1_grad = 1/m * Theta1_grad;
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + lambda/m * Theta1(:, 2:end);
 
 
-Theta2_grad = 1/m * Theta2_grad 
-Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + lambda/m * Theta2(:, 2:end)
+Theta2_grad = 1/m * Theta2_grad;
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + lambda/m * Theta2(:, 2:end);
 
 % -------------------------------------------------------------
 
