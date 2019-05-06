@@ -105,8 +105,17 @@ for i = 1:rows(X)
   J = J + 1/m * sum(-yi * log(h)' - (1 - yi) * log(1-h)');
 endfor
 
+p = lambda/(2*m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
+
 % removing first weight column to penalizing, the first feature - the constant feature or x0 - must not be consider
-J = J + lambda/(2*m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
+J = J + p
+
+Theta1_grad = 1/m * Theta1_grad 
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + lambda/m * Theta1(:, 2:end)
+
+
+Theta2_grad = 1/m * Theta2_grad 
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + lambda/m * Theta2(:, 2:end)
 
 % -------------------------------------------------------------
 
@@ -114,8 +123,5 @@ J = J + lambda/(2*m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:en
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
-grad = 1/m * grad;
-
 
 end
