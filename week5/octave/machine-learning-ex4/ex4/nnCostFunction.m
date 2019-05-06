@@ -62,23 +62,41 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% dummy encoding
+de = zeros(length(y), num_labels);
+for i = 1:length(y)
+  de(i, y(i)) = 1;
+endfor
 
+H = zeros(size(X,1), num_labels);
 
+% Forward propagation - calculating hypothesis
+% A1 = add_ones(X)
+%
+% Z2 = A1 * Theta1';
+% A2 = add_ones(sigmoid(Z2));
+%
+% Z3 = A2 * Theta2';
+% H = sigmoid(Z3);
 
+for i = 1:rows(X)
+  yi = de(i, :);
 
+  a1 = [1 X(i, :)];
+  z2 = a1 * Theta1';
 
+  a2 = [1 sigmoid(z2)];
+  z3 = a2 * Theta2';
 
+  h = sigmoid(z3);
 
+  H(i, :) = h;
 
+  J = J + 1/m * sum(-yi * log(h)' - (1 - yi) * log(1-h)');
+endfor
 
-
-
-
-
-
-
-
-
+% removing first weight column to penalizing, the first feature - the constant feature or x0 - must not be consider
+J = J + lambda/(2*m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)))
 
 % -------------------------------------------------------------
 
