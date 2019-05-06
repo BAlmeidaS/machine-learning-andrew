@@ -79,6 +79,8 @@ H = zeros(size(X,1), num_labels);
 % Z3 = A2 * Theta2';
 % H = sigmoid(Z3);
 
+
+
 for i = 1:rows(X)
   yi = de(i, :);
 
@@ -90,13 +92,21 @@ for i = 1:rows(X)
 
   h = sigmoid(z3);
 
+  d3 = h - yi;
+
+  Theta2_grad = Theta2_grad + d3' * a2;
+
+  d2 = (Theta2(:, 2:end)' * d3') .* sigmoidGradient(z2');
+
+  Theta1_grad = Theta1_grad + d2 * a1;
+
   H(i, :) = h;
 
   J = J + 1/m * sum(-yi * log(h)' - (1 - yi) * log(1-h)');
 endfor
 
 % removing first weight column to penalizing, the first feature - the constant feature or x0 - must not be consider
-J = J + lambda/(2*m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)))
+J = J + lambda/(2*m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
 
 % -------------------------------------------------------------
 
@@ -104,6 +114,8 @@ J = J + lambda/(2*m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:en
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
+
+grad = 1/m * grad;
 
 
 end
