@@ -23,11 +23,32 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+cs = [0.01, 0.03, 1, 3, 10];
+sigmas = [0.01, 0.03, 0.1, 0.3, 1, 3];
 
+err = inf;
 
+for i = 1:size(cs)(2)
+  for j = 1:size(sigmas)(2)
 
+    C_temp = cs(i);
+    sigma_temp = sigmas(j);
 
+    model = svmTrain(X, y, C_temp, @(x1, x2) gaussianKernel(x1, x2, sigma_temp));
+    predictions = svmPredict(model, Xval);
 
+    temp_err = mean(double(predictions ~= yval));
+
+    if err > temp_err;
+      err = temp_err;
+      C = C_temp;
+      sigma = sigma_temp;
+    end
+  end
+end
+
+disp ("The best C is:"), disp (C)
+disp ("The best Sigma is:"), disp (sigma)
 
 % =========================================================================
 
