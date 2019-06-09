@@ -21,11 +21,18 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+err = @(x, mi)((x-mi)*(x-mi)');
 
-
-
-
-
+for i = 1:size(X,1)
+  e = inf;
+  for j = 1:K
+    e_temp = err(X(i, :), centroids(j, :));
+    if e_temp < e
+      e = e_temp;
+      idx(i) = j;
+    end
+  end
+end
 
 % =============================================================
 
