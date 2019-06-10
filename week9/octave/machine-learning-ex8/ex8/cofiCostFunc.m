@@ -40,20 +40,19 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+ThetaComplete = [ones(1, size(Theta, 2)); Theta];
 
+J = 1/2 * sum(sum(((X*Theta' .* R) - (Y .* R)) .^ 2)) ...
+    + (lambda/2)*sum(sum(Theta.^2)) ...
+    + (lambda/2)*sum(sum(X.^2));
 
+active_users_flag = (sum(R)>=1)';
+theta_for_active_user = Theta .* active_users_flag;
+X_grad = ((X*Theta' .* R) - (Y .* R)) * theta_for_active_user + X .* lambda;
 
-
-
-
-
-
-
-
-
-
-
-
+active_items_flag = (sum(R, 2)>=1);
+X_for_active_items = X .* active_items_flag;
+Theta_grad = ((X*Theta' .* R) - (Y .* R))' * X_for_active_items + Theta .* lambda;
 
 % =============================================================
 
